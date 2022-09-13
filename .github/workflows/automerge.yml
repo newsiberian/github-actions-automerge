@@ -54,6 +54,10 @@ jobs:
     needs:   automerge
     steps:
       - id: sync-dev-with-prod
-        run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-
-
+        uses: peter-evans/create-pull-request@v4
+        with:
+          base: main
+          branch: prod
+          title: 'Sync dev with prod'
+          labels: |
+            automated PR
