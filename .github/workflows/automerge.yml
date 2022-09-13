@@ -6,16 +6,16 @@ on:
   #   triggering auto-merge on additional conflicts fix or
   #   something similar
   #
-  #  pull_request:
-  #    types:
-  #      - labeled
-  #      - unlabeled
-  #      - synchronize
-  #      - opened
-  #      - edited
-  #      - ready_for_review
-  #      - reopened
-  #      - unlocked
+  pull_request:
+    types:
+      - labeled
+      - unlabeled
+      - synchronize
+      - opened
+      - edited
+      - ready_for_review
+      - reopened
+      - unlocked
   pull_request_review:
     types:
       - submitted
@@ -25,6 +25,7 @@ on:
   status: {}
 jobs:
   automerge:
+    if: ${{ startsWith(github.event.pull_request.head.ref, 'release/') && github.event.pull_request.base.ref == 'prod' }}
     runs-on: ubuntu-latest
     steps:
       # We decide to turn this off for 'dev'
@@ -42,7 +43,6 @@ jobs:
       #          MERGE_METHOD: "squash"
       - id: automerge-prod
         name: automerge-prod
-        if: ${{ startsWith(github.event.pull_request.head.ref, 'release/') && github.event.pull_request.base.ref == 'prod' }}
         uses: "pascalgn/automerge-action@v0.15.3"
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
