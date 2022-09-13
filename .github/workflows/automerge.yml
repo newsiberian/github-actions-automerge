@@ -54,10 +54,11 @@ jobs:
     needs:   automerge
     steps:
       - id: sync-dev-with-prod
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
         uses: peter-evans/create-pull-request@v4
         with:
           base: main
           branch: prod
-          title: 'Sync dev with prod'
+          title: "Sync dev with prod"
           labels: |
             automated PR
