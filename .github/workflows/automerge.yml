@@ -50,6 +50,7 @@ jobs:
           MERGE_LABELS: ""
           MERGE_METHOD: "merge"
   workaround-sync-bug:
+    runs-on: ubuntu-latest
     steps:
       - id: workaround
         run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
