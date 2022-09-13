@@ -49,15 +49,20 @@ jobs:
           MERGE_DELETE_BRANCH: true
           MERGE_LABELS: ""
           MERGE_METHOD: "merge"
+  workaround-sync-bug:
+    runs-on: ubuntu-latest
+    steps:
+      - id: workaround
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
   sync:
     runs-on: ubuntu-latest
-    needs:   automerge
+    needs:   [automerge, workaround-sync-bug]
     steps:
       - id: sync-dev-with-prod
         uses: peter-evans/create-pull-request@v4
         with:
           base: main
           branch: prod
-          title: 'Sync dev with prod'
+          title: "Sync dev with prod"
           labels: |
             automated PR
