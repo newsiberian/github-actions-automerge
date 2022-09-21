@@ -59,6 +59,9 @@ jobs:
     needs:   [automerge]
 #    needs:   [automerge, workaround-sync-bug]
     steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: main
       - name: ls
         run: |
           echo "ls"
@@ -75,9 +78,6 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_ENV
       - name: Check release version
         run: echo "${{ env.VERSION }}"
-      - uses: actions/checkout@v3
-        with:
-          ref: main
       - name: Reset prod branch
         run: |
           git fetch origin prod:prod
