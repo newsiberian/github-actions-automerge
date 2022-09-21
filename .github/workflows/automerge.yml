@@ -25,7 +25,7 @@ on:
   status: {}
 jobs:
   automerge:
-    if: ${{ startsWith(github.event.pull_request.head.ref, 'release/') && github.event.pull_request.base.ref == 'prod' }}
+    if: ${{ (startsWith(github.event.pull_request.head.ref, 'release/') || startsWith(github.event.pull_request.head.ref, 'hotfix/')) && github.event.pull_request.base.ref == 'prod' }}
     runs-on: ubuntu-latest
     steps:
       # We decide to turn this off for 'dev'
@@ -70,11 +70,3 @@ jobs:
           title: "${{ env.RELEASE }} Sync dev with prod"
           labels: |
             automated PR
-            - name: Auto merge to prod
-      - name: Auto-merge branch to dev
-        uses: "pascalgn/automerge-action@v0.15.3"
-        env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          MERGE_DELETE_BRANCH: true
-          MERGE_LABELS: ""
-          MERGE_METHOD: "merge"
