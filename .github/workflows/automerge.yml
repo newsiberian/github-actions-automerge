@@ -61,6 +61,8 @@ jobs:
     needs:   [automerge]
 #    needs:   [automerge, workaround-sync-bug]
     steps:
+      - name: Read release version
+        run: echo "RELEASE2=${{ github.event.pull_request.head.ref }}" >> $GITHUB_ENV
       # we have to check out prod in order to take release version
 #      - uses: actions/checkout@v3
 #        with:
