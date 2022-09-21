@@ -49,27 +49,12 @@ jobs:
           MERGE_DELETE_BRANCH: true
           MERGE_LABELS: ""
           MERGE_METHOD: "merge"
-#  workaround-sync-bug:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - id: workaround
-#        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
   sync:
     runs-on: ubuntu-latest
     needs:   [automerge]
-#    needs:   [automerge, workaround-sync-bug]
     steps:
       - name: Get release version
         run: echo "RELEASE=${{ github.event.pull_request.head.ref }}" >> $GITHUB_ENV
-      # we have to check out prod in order to take release version
-#      - uses: actions/checkout@v3
-#        with:
-#          ref: prod
-#
-#      - name: Read release version
-#        run: |
-#          export VERSION=$(awk -F'"' '/"version": ".+"/{ print $4; exit; }' package.json)
-#          echo "VERSION=$VERSION" >> $GITHUB_ENV
       - uses: actions/checkout@v3
         with:
           ref: main
@@ -78,7 +63,6 @@ jobs:
           git fetch origin prod:prod
           git reset --hard prod
       - name: Create Pull Request
-        id: sync-dev-with-prod
         uses: peter-evans/create-pull-request@v4
         with:
           branch: sync-dev-with-prod-${{ env.RELEASE }}
@@ -86,3 +70,11 @@ jobs:
           title: "${{ env.RELEASE }} Sync dev with prod"
           labels: |
             automated PR
+            - name: Auto merge to prod
+      - name: Auto-merge branch to dev
+        uses: "pascalgn/automerge-action@v0.15.3"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          MERGE_DELETE_BRANCH: true
+          MERGE_LABELS: ""
+          MERGE_METHOD: "merge"
