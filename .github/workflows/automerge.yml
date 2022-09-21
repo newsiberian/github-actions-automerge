@@ -28,6 +28,8 @@ jobs:
     if: ${{ startsWith(github.event.pull_request.head.ref, 'release/') && github.event.pull_request.base.ref == 'prod' }}
     runs-on: ubuntu-latest
     steps:
+      - name: Read release version
+        run: echo "RELEASE=${{ github.event.pull_request.head.ref }}" >> $GITHUB_ENV
       # We decide to turn this off for 'dev'
       #
       #      - id: automerge-dev
@@ -41,8 +43,8 @@ jobs:
       #          MERGE_DELETE_BRANCH_FILTER: "prod"
       #          MERGE_LABELS: ""
       #          MERGE_METHOD: "squash"
-      - id: automerge-prod
-        name: automerge-prod
+      - name: Auto merge to prod
+        id: automerge-prod
         uses: "pascalgn/automerge-action@v0.15.3"
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
@@ -60,29 +62,27 @@ jobs:
 #    needs:   [automerge, workaround-sync-bug]
     steps:
       # we have to check out prod in order to take release version
-      - uses: actions/checkout@v3
-        with:
-          ref: prod
-      - name: Read release version
-        run: |
-          export VERSION=$(awk -F'"' '/"version": ".+"/{ print $4; exit; }' package.json)
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+#      - uses: actions/checkout@v3
+#        with:
+#          ref: prod
+#
+#      - name: Read release version
+#        run: |
+#          export VERSION=$(awk -F'"' '/"version": ".+"/{ print $4; exit; }' package.json)
+#          echo "VERSION=$VERSION" >> $GITHUB_ENV
       - uses: actions/checkout@v3
         with:
           ref: main
-#      - name: Check release version
-#        run: echo "${{ env.VERSION }}"
       - name: Reset prod branch
         run: |
           git fetch origin prod:prod
-          git reset --hard prod
+#          git reset --hard prod
       - name: Create Pull Request
         id: sync-dev-with-prod
         uses: peter-evans/create-pull-request@v4
         with:
-#          base: main
-          branch: prod-sync${{ env.VERSION }}
+          branch: sync-dev-with-prod-${{ env.RELEASE }}
           token: ${{ secrets.PAT }}
-          title: "Sync dev with prod"
+          title: "${{ env.RELEASE }} Sync dev with prod"
           labels: |
             automated PR
