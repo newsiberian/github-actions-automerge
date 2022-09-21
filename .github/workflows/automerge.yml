@@ -62,6 +62,7 @@ jobs:
       - name: Read release version
         run: |
           pwd
+          ls
           export VERSION=$(awk -F'"' '/"version": ".+"/{ print $4; exit; }' package.json)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
       - name: Check release version
