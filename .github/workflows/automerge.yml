@@ -65,6 +65,7 @@ jobs:
         with:
           base: main
           branch: prod
+          token: 'for-gh-actions'
           title: "Sync dev with prod"
           labels: |
             automated PR
