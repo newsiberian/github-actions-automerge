@@ -49,15 +49,16 @@ jobs:
           MERGE_DELETE_BRANCH: true
           MERGE_LABELS: ""
           MERGE_METHOD: "merge"
-  workaround-sync-bug:
-    runs-on: ubuntu-latest
-    steps:
-      - id: workaround
-        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+#  workaround-sync-bug:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - id: workaround
+#        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
   sync:
     runs-on: ubuntu-latest
     needs:   [automerge, workaround-sync-bug]
     steps:
+      - uses: actions/checkout@v3
       - id: sync-dev-with-prod
         uses: peter-evans/create-pull-request@v4
         with:
