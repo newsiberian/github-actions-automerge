@@ -83,8 +83,8 @@ jobs:
         id: sync-dev-with-prod
         uses: peter-evans/create-pull-request@v4
         with:
-          branch: sync-dev-with-prod-${{ env.RELEASE }}
+          branch: sync-dev-with-prod-${{ env.RELEASE2 }}
           token: ${{ secrets.PAT }}
-          title: "${{ env.RELEASE }} Sync dev with prod"
+          title: "${{ env.RELEASE2 }} Sync dev with prod"
           labels: |
             automated PR
