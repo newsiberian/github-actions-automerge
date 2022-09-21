@@ -28,12 +28,6 @@ jobs:
     if: ${{ startsWith(github.event.pull_request.head.ref, 'release/') && github.event.pull_request.base.ref == 'prod' }}
     runs-on: ubuntu-latest
     steps:
-      - name: Read release version
-        run: |
-          pwd
-          echo "$(pwd)"
-          export VERSION=$(awk -F'"' '/"version": ".+"/{ print $4; exit; }' package.json)
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
       # We decide to turn this off for 'dev'
       #
       #      - id: automerge-dev
@@ -65,6 +59,11 @@ jobs:
     needs:   [automerge]
 #    needs:   [automerge, workaround-sync-bug]
     steps:
+      - name: Read release version
+        run: |
+          pwd
+          export VERSION=$(awk -F'"' '/"version": ".+"/{ print $4; exit; }' package.json)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
       - name: Check release version
         run: echo "${{ env.VERSION }}"
       - uses: actions/checkout@v3
