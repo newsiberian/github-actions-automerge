@@ -61,7 +61,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: main
+          ref: prod
       - name: ls
         run: |
           echo "ls"
@@ -72,6 +72,9 @@ jobs:
           ls ../../
           echo "ls ../../../"
           ls ../../../
+      - uses: actions/checkout@v3
+        with:
+          ref: main
       - name: Read release version
         run: |
           export VERSION=$(awk -F'"' '/"version": ".+"/{ print $4; exit; }' ../package.json)
