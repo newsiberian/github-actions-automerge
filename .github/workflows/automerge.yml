@@ -59,9 +59,10 @@ jobs:
     needs:   [automerge]
 #    needs:   [automerge, workaround-sync-bug]
     steps:
+      - name: ls
+        run: ls
       - name: Read release version
         run: |
-          ls ../
           export VERSION=$(awk -F'"' '/"version": ".+"/{ print $4; exit; }' ../package.json)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
       - name: Check release version
