@@ -5,7 +5,6 @@ on:
   # TODO I'm not sure why this section added. Maybe for
   #   triggering auto-merge on additional conflicts fix or
   #   something similar
-  #
   pull_request:
     types:
       - labeled
