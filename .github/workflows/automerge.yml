@@ -60,13 +60,19 @@ jobs:
 #    needs:   [automerge, workaround-sync-bug]
     steps:
       - uses: actions/checkout@v3
-      - id: sync-dev-with-prod
+        with:
+          ref: main
+      - name: Reset prod branch
+        run: |
+          git fetch origin prod:prod
+          git reset --hard prod
+      - name: Create Pull Request
+        id: sync-dev-with-prod
         uses: peter-evans/create-pull-request@v4
         with:
-          base: main
-          branch: prod
+#          base: main
+          branch: prod-sync
           token: ${{ secrets.PAT }}
-#          token: 'for-gh-actions'
           title: "Sync dev with prod"
           labels: |
             automated PR
