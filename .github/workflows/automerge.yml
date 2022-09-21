@@ -28,8 +28,6 @@ jobs:
     if: ${{ startsWith(github.event.pull_request.head.ref, 'release/') && github.event.pull_request.base.ref == 'prod' }}
     runs-on: ubuntu-latest
     steps:
-      - name: Read release version
-        run: echo "RELEASE=${{ github.event.pull_request.head.ref }}" >> $GITHUB_ENV
       # We decide to turn this off for 'dev'
       #
       #      - id: automerge-dev
@@ -61,8 +59,8 @@ jobs:
     needs:   [automerge]
 #    needs:   [automerge, workaround-sync-bug]
     steps:
-      - name: Read release version
-        run: echo "RELEASE2=${{ github.event.pull_request.head.ref }}" >> $GITHUB_ENV
+      - name: Get release version
+        run: echo "RELEASE=${{ github.event.pull_request.head.ref }}" >> $GITHUB_ENV
       # we have to check out prod in order to take release version
 #      - uses: actions/checkout@v3
 #        with:
@@ -78,13 +76,13 @@ jobs:
       - name: Reset prod branch
         run: |
           git fetch origin prod:prod
-#          git reset --hard prod
+          git reset --hard prod
       - name: Create Pull Request
         id: sync-dev-with-prod
         uses: peter-evans/create-pull-request@v4
         with:
-          branch: sync-dev-with-prod-${{ env.RELEASE2 }}
+          branch: sync-dev-with-prod-${{ env.RELEASE }}
           token: ${{ secrets.PAT }}
-          title: "${{ env.RELEASE2 }} Sync dev with prod"
+          title: "${{ env.RELEASE }} Sync dev with prod"
           labels: |
             automated PR
