@@ -59,26 +59,17 @@ jobs:
     needs:   [automerge]
 #    needs:   [automerge, workaround-sync-bug]
     steps:
+      # we have to check out prod in order to take release version
       - uses: actions/checkout@v3
         with:
           ref: prod
-      - name: ls
+      - name: Read release version
         run: |
-          echo "ls"
-          ls
-          echo "ls ../"
-          ls ../
-          echo "ls ../../"
-          ls ../../
-          echo "ls ../../../"
-          ls ../../../
+          export VERSION=$(awk -F'"' '/"version": ".+"/{ print $4; exit; }' package.json)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
       - uses: actions/checkout@v3
         with:
           ref: main
-      - name: Read release version
-        run: |
-          export VERSION=$(awk -F'"' '/"version": ".+"/{ print $4; exit; }' ../package.json)
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
       - name: Check release version
         run: echo "${{ env.VERSION }}"
       - name: Reset prod branch
