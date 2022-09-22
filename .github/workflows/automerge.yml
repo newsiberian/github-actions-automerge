@@ -27,19 +27,6 @@ jobs:
     if: ${{ (startsWith(github.event.pull_request.head.ref, 'release/') || startsWith(github.event.pull_request.head.ref, 'hotfix/')) && github.event.pull_request.base.ref == 'prod' }}
     runs-on: ubuntu-latest
     steps:
-      # We decide to turn this off for 'dev'
-      #
-      #      - id: automerge-dev
-      #        name: automerge-dev
-      #        if: ${{ startsWith(github.event.pull_request.head.ref, 'FE-') && github.event.pull_request.base.ref == 'dev' }}
-      #        uses: "pascalgn/automerge-action@v0.15.3"
-      #        env:
-      #          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-      #          MERGE_DELETE_BRANCH: true
-      #          # for cases when we merge prod to dev
-      #          MERGE_DELETE_BRANCH_FILTER: "prod"
-      #          MERGE_LABELS: ""
-      #          MERGE_METHOD: "squash"
       - name: Auto merge to prod
         id: automerge-prod
         uses: "pascalgn/automerge-action@v0.15.3"
