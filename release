@@ -1,0 +1,9 @@
+#!/bin/bash
+
+RELEASE=$1
+
+git checkout prod
+git pull --rebase
+git checkout -b release/$RELEASE
+git merge origin/dev
+gh pr create --base prod --title "Release $RELEASE"
