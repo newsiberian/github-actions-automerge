@@ -1,6 +1,6 @@
 {
   "name": "github-actions-automerge",
-  "version": "2023.27.6",
+  "version": "2023.27.7",
   "main": "index.js",
   "repository": "git@github.com:newsiberian/github-actions-automerge.git",
   "author": "Denis Akiyakov <newsiberian@users.noreply.github.com>",
