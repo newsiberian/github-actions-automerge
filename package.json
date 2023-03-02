@@ -1,11 +1,12 @@
 {
   "name": "github-actions-automerge",
-  "version": "2023.24.0",
+  "version": "2023.25.0",
   "main": "index.js",
   "repository": "git@github.com:newsiberian/github-actions-automerge.git",
   "author": "Denis Akiyakov <newsiberian@users.noreply.github.com>",
   "license": "MIT",
   "scripts": {
-    "release": "node --experimental-json-modules release.mjs"
+    "release": "node --experimental-json-modules release.mjs",
+    "hotfix": "node --experimental-json-modules release.mjs hotfix"
   }
 }
